@@ -1,4 +1,4 @@
 MyApp
 =====
 
-Mobile Application
+It is a Mobile App Based on Backbone 
