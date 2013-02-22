@@ -10,6 +10,8 @@
         <div id="contacts">
             <header>
                 <div id="filter"><label>Show me:</label></div>
+                <input type="button" value="Exit" onclick="exitFromApp();">
+                 <!-- <input type="button" value="Delete File" onclick="doDeleteFile();">-->
                 <a id="showForm" href="#">Add new contact</a>
                 <form id="addContact" action="#">
                     <label for="photo">Photo:</label><input id="photo" type="file" />
@@ -22,6 +24,7 @@
                 </form>
             </header>
         </div>
+        <div id="content"></div>    
         <script id="contactTemplate" type="text/template">
             <img src="<%= photo %>" alt="<%= name %>" />
             <h1><%= name %><span><%= type %></span></h1>
@@ -39,12 +42,15 @@
                 <input class="name" value="<%= name %>" />
                 <input id="type" type="hidden" value="<%= type %>" />
                 <input class="address" value="<%= address %>" />
+				 <input class="rate" value="<%=rate %>" />
                 <input class="tel" value="<%= tel %>" />
                 <input class="email" value="<%= email %>" />
                 <button class="save">Save</button>
                 <button class="cancel">Cancel</button>
             </form>
-        </script>
+        </script>  
+        
+       	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
         <script src="js/jquery-1.7.1.min.js"></script>
         <script src="js/json2.js"></script>
         <script src="js/underscore-min.js"></script>

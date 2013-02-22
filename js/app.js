@@ -1,18 +1,77 @@
-(function ($) {
+	var fileSystem;
+	var contacts;
+	
+	document.addEventListener("deviceready", onDeviceReady, true);
+	
+	function logit(s) {
+		document.getElementById("content").innerHTML += s;
+	}
+	
+	function onDeviceReady() {
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
+		
+		document.addEventListener("backbutton", function(e){
+		          exitFromApp();  
+		}, false);
+	}
+	
+	function onFSSuccess(fs) {
+		fileSystem = fs;
+		console.log( "Got the file system: "+fileSystem.name +"<br/>" +"root entry name is "+fileSystem.root.name + "<p/>");   
+		doAppendFile();
+	} 
 
-    //demo data
-    var contacts = [
-        { name: "Food 1", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "south indian" },
-        { name: "Food 2", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "punjabi" },
-        { name: "Food 3", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "chinese" },
-        { name: "Food 4", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "south indian" },
-        { name: "Food 5", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "italian" },
-        { name: "Food 6", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "street food" },
-        { name: "Food 7", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "punjabi" },
-        { name: "Food 8", address: "1, a street, a town, a city, AB12 3CD", rate: "9*", tel: "0123456789", email: "anemail@me.com", type: "chinese" }
-    ];
-
-    //define product model
+	function doAppendFile(e) {
+		fileSystem.root.getFile("data.json", {create:true}, appendFile, onError);
+	}
+	
+	function appendFile(f) {
+		f.createWriter(function(writerOb) {
+			writerOb.onwrite=function() {
+				//logit("Done writing to file.<p/>");
+			}
+			if(writerOb.length<1){
+				writerOb.write('[{"name":"Food 1","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"south indian"},{"name":"Food 2","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"punjabi"},{"name":"Food 3","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"chinese"},{"name":"Food 4","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"south indian"},{"name":"Food 5","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"italian"},{"name":"Food 6","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"street food"},{"name":"Food 7","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"punjabi"},{"name":"Food 8","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"chinese"}]');
+			}	
+		})
+		
+		doReadFile();
+	}
+	
+	function doReadFile(e) {
+		fileSystem.root.getFile("data.json", {create:true}, readFile, onError);
+	}
+	function readFile(f) {
+		reader = new FileReader();
+		reader.onloadend = function(e) {
+			contacts = JSON.parse(e.target.result);	
+			Back(contacts);	
+		}
+		reader.readAsText(f);
+	}
+	
+	
+	function doDeleteFile(e) {fileSystem.root.getFile("data.json", {create:true}, function(f) {f.remove(function() {logit("File removed<p/>");});}, onError);}
+	
+	
+	function onError(e) {
+		getById("#content").innerHTML = "<h2>Error</h2>"+e.toString();
+	}
+	
+	function exitFromApp()
+    {
+	 var writer = new FileWriter("/sdcard/data.json");
+	 	if(contacts.length<1){
+	 		doDeleteFile();
+	 	}else{
+	 		writer.write(JSON.stringify(contacts), false);
+	 	}
+     navigator.app.exitApp();
+    }
+ 
+	
+	
+function Back(contacts){
     var Contact = Backbone.Model.extend({
         defaults: {
             photo: "img/placeholder.jpg",
@@ -25,7 +84,6 @@
         }
     });
 
-    //define individual contact view
     var ContactView = Backbone.View.extend({
         tagName: "article",
         className: "contact-container",
@@ -45,35 +103,28 @@
             "click button.cancel": "cancelEdit"
         },
 
-        //delete a contact
+       
         deleteContact: function () {
             var removedType = this.model.get("type").toLowerCase();
-
-            //remove model
             this.model.destroy();
-
-            //remove view from page
             this.remove();
 
            for(var i=0;i<contacts.length;i++) {
             if(contacts[i].name==this.model.attributes.name)
-            {
-                console.log(contacts);
-                console.log(i+1);
+            {    
                 contacts.splice(i,1);
-                console.log(contacts);
             }
            }
-               //re-render select if no more of deleted type
+               
             if (_.indexOf(directory.getTypes(), removedType) === -1) {
                 directory.$el.find("#filter select").children("[value='" + removedType + "']").remove();
             }
         },
 
-        //switch contact to edit mode
+       
         editContact: function () {
             this.$el.html(this.editTemplate(this.model.toJSON()));
-            //add select to set type
+            
             var newOpt = $("<option/>", {
                 html: "<em>Add new...</em>",
                 value: "addType"
@@ -95,31 +146,25 @@
             e.preventDefault();
             var formData = {},
                 prev = this.model.previousAttributes();
-            //get form data
+           
             $(e.target).closest("form").find(":input").not("button").each(function () {
                 var el = $(this);
                 formData[el.attr("class")] = el.val();
             });
-
-            //use default photo if none supplied
             if (formData.photo === "") {
                 delete formData.photo;
             }
-
-            //update model
+           
             this.model.set(formData);
 
-            //render view
             this.render();
 
-            //if model acquired default photo property, remove it
             if (prev.photo === "/img/placeholder.png") {
                 delete prev.photo;
             }
 
-            //update contacts array
             _.each(contacts, function (contact) {
-                if (_.isEqual(contact, prev)) {
+                if (_.isEqual(contact.name, prev.name)) {
                     contacts.splice(_.indexOf(contacts, contact), 1, formData);
                 }
             });
@@ -130,12 +175,10 @@
         }
     });
 
-    //define directory collection
     var Directory = Backbone.Collection.extend({
         model: Contact
     });
 
-    //define master view
     var DirectoryView = Backbone.View.extend({
         el: $("#contacts"),
 
@@ -188,20 +231,17 @@
             return select;
         },
 
-        //add ui events
         events: {
             "change #filter select": "setFilter",
             "click #add": "addContact",
             "click #showForm": "showForm"
         },
 
-        //Set filter property and fire change event
         setFilter: function (e) {
             this.filterType = e.currentTarget.value;
             this.trigger("change:filterType");
         },
 
-        //filter the view
         filterByType: function () {
             if (this.filterType === "all") {
                 this.collection.reset(contacts);
@@ -220,7 +260,6 @@
             }
         },
 
-        //add a new contact
         addContact: function (e) {
             e.preventDefault();
 
@@ -231,10 +270,8 @@
                 }
             });
 
-            //update data store
             contacts.push(formData);
 
-            //re-render select if new type is unknown
             if (_.indexOf(this.getTypes(), formData.type) === -1) {
                 this.collection.add(new Contact(formData));
                 this.$el.find("#filter").find("select").remove().end().append(this.createSelect());
@@ -246,12 +283,10 @@
         removeContact: function (removedModel) {
             var removed = removedModel.attributes;
 
-            //if model acquired default photo property, remove it
             if (removed.photo === "/img/placeholder.png") {
                 delete removed.photo;
             }
 
-            //remove from contacts array
             _.each(contacts, function (contact) {
                 if (_.isEqual(contact, removed)) {
                     contacts.splice(_.indexOf(contacts, contact), 1);
@@ -264,7 +299,6 @@
         }
     });
 
-    //add routing
     var ContactsRouter = Backbone.Router.extend({
         routes: {
             "filter/:type": "urlFilter"
@@ -276,13 +310,9 @@
         }
     });
 
-    //create instance of master view
     var directory = new DirectoryView();
-
-    //create router instance
     var contactsRouter = new ContactsRouter();
+    Backbone.history.start(); 
 
-    //start history service
-    Backbone.history.start();
+};
 
-} (jQuery));
