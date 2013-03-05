@@ -1,80 +1,11 @@
-	var fileSystem;
-	var contacts;
-	
-	document.addEventListener("deviceready", onDeviceReady, true);
-	
-	function logit(s) {
-		document.getElementById("content").innerHTML += s;
-	}
-	
-	function onDeviceReady() {
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFSSuccess, onError);
-		
-		document.addEventListener("backbutton", function(e){
-		          exitFromApp();  
-		}, false);
-	}
-	
-	function onFSSuccess(fs) {
-		fileSystem = fs;
-		console.log( "Got the file system: "+fileSystem.name +"<br/>" +"root entry name is "+fileSystem.root.name + "<p/>");   
-		doAppendFile();
-	} 
 
-	function doAppendFile(e) {
-		fileSystem.root.getFile("data.json", {create:true}, appendFile, onError);
-	}
-	
-	function appendFile(f) {
-		f.createWriter(function(writerOb) {
-			writerOb.onwrite=function() {
-				//logit("Done writing to file.<p/>");
-			}
-			if(writerOb.length<1){
-				writerOb.write('[{"name":"Food 1","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"south indian"},{"name":"Food 2","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"punjabi"},{"name":"Food 3","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"chinese"},{"name":"Food 4","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"south indian"},{"name":"Food 5","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"italian"},{"name":"Food 6","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"street food"},{"name":"Food 7","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"punjabi"},{"name":"Food 8","address":"1, a street, a town, a city, AB12 3CD","rate":"9*","tel":"0123456789","email":"anemail@me.com","type":"chinese"}]');
-			}	
-		})
-		
-		doReadFile();
-	}
-	
-	function doReadFile(e) {
-		fileSystem.root.getFile("data.json", {create:true}, readFile, onError);
-	}
-	function readFile(f) {
-		reader = new FileReader();
-		reader.onloadend = function(e) {
-			contacts = JSON.parse(e.target.result);	
-			Back(contacts);	
-		}
-		reader.readAsText(f);
-	}
-	
-	
-	function doDeleteFile(e) {fileSystem.root.getFile("data.json", {create:true}, function(f) {f.remove(function() {logit("File removed<p/>");});}, onError);}
-	
-	
-	function onError(e) {
-		getById("#content").innerHTML = "<h2>Error</h2>"+e.toString();
-	}
-	
-	function exitFromApp()
-    {
-	 var writer = new FileWriter("/sdcard/data.json");
-	 	if(contacts.length<1){
-	 		doDeleteFile();
-	 	}else{
-	 		writer.write(JSON.stringify(contacts), false);
-	 	}
-     navigator.app.exitApp();
-    }
  
-	
-	
-function Back(contacts){
-    var Contact = Backbone.Model.extend({
+$.mobile.pageLoadErrorMessage = false;
+$.mobile.touchOverflowEnabled = true;
+function Back(contacts){      
+	var Contact = Backbone.Model.extend({
         defaults: {
-            photo: "img/placeholder.jpg",
+            photo: "images/placeholder.jpg",
             name: "",
             address: "",
             rate:"",
@@ -91,7 +22,7 @@ function Back(contacts){
         editTemplate: _.template($("#contactEditTemplate").html()),
 
         render: function () {
-            this.$el.html(this.template(this.model.toJSON()));
+            this.$el.html(this.template(this.model.toJSON())).trigger('create');				// jquery after edit
             return this;
         },
 
@@ -123,13 +54,13 @@ function Back(contacts){
 
        
         editContact: function () {
-            this.$el.html(this.editTemplate(this.model.toJSON()));
+            this.$el.html(this.editTemplate(this.model.toJSON())).trigger('create');			// on edit
             
             var newOpt = $("<option/>", {
                 html: "<em>Add new...</em>",
                 value: "addType"
             });
-            this.select = directory.createSelect().addClass("type").val(this.$el.find("#type").val()).append(newOpt).insertAfter(this.$el.find(".name"));
+            this.select = directory.createSelect().addClass("type").val(this.$el.find("#type").val()).append(newOpt).insertAfter(this.$el.find("#name"));
             this.$el.find("input[type='hidden']").remove();
         },
 
@@ -146,10 +77,10 @@ function Back(contacts){
             e.preventDefault();
             var formData = {},
                 prev = this.model.previousAttributes();
-           
+            formData["photo"]= $("#pic").attr('src');
             $(e.target).closest("form").find(":input").not("button").each(function () {
                 var el = $(this);
-                formData[el.attr("class")] = el.val();
+                formData[el.attr("id")] = el.val();
             });
             if (formData.photo === "") {
                 delete formData.photo;
@@ -159,7 +90,7 @@ function Back(contacts){
 
             this.render();
 
-            if (prev.photo === "/img/placeholder.png") {
+            if (prev.photo === "/images/placeholder.png") {
                 delete prev.photo;
             }
 
@@ -186,7 +117,7 @@ function Back(contacts){
             this.collection = new Directory(contacts);
 
             this.render();
-            this.$el.find("#filter").append(this.createSelect());
+            this.$el.find("#filter").append(this.createSelect());						// no trigger 
 
             this.on("change:filterType", this.filterByType, this);
             this.collection.on("reset", this.render, this);
@@ -206,7 +137,7 @@ function Back(contacts){
             var contactView = new ContactView({
                 model: item
             });
-            this.$el.append(contactView.render().el);
+            this.$el.append(contactView.render().el).trigger('create');		//  			 on sorting by selector  ......... trigger  it create red color 
         },
 
         getTypes: function () {
@@ -217,10 +148,8 @@ function Back(contacts){
 
         createSelect: function () {
             var filter = this.$el.find("#filter"),
-                select = $("<select/>", {
-                    html: "<option value='all'>All</option>"
-                });
-
+                select = $("<select  id='select' data-native-menu='false'  />");
+                    $("<option value='all'>All</option>").appendTo(select);
             _.each(this.getTypes(), function (item) {
                 var option = $("<option/>", {
                     value: item.toLowerCase(),
@@ -261,11 +190,15 @@ function Back(contacts){
         },
 
         addContact: function (e) {
+		
+        	this.filterType = 'all';
+            this.trigger("change:filterType");
             e.preventDefault();
 
             var formData = {};
+            formData["photo"]= $("#photo").attr('src');
             $("#addContact").children("input").each(function (i, el) {
-                if ($(el).val() !== "") {
+                if ($(el).val() !== "" ) {
                     formData[el.id] = $(el).val();
                 }
             });
@@ -274,10 +207,14 @@ function Back(contacts){
 
             if (_.indexOf(this.getTypes(), formData.type) === -1) {
                 this.collection.add(new Contact(formData));
-                this.$el.find("#filter").find("select").remove().end().append(this.createSelect());
+                this.$el.find("#filter").find("select").remove().end().append(this.createSelect()).trigger('create');  		// on new created selector
             } else {
                 this.collection.add(new Contact(formData));
             }
+            if( $($("#filter > div").eq(1)).length!=0) {
+      		  $('#filter > div:first').remove();
+      		  }
+			$("#addContact").slideToggle();
         },
 
         removeContact: function (removedModel) {

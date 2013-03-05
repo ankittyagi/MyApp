@@ -1,60 +1,286 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<!--
+Design by mRova Solutions
+http://www.mrova.com
+Released for free under a Creative Commons Attribution 2.5 License
+-->
+<html>
+	<head>
+		<title>Free Mobile Template</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<link rel="stylesheet" href="css/jquery.mobile-1.2.0.min.css" />
+		<link rel="stylesheet" href="css/screen.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/photoswipe.css" />
+	</head>
+	<body class="body">
+	
+		<div data-role="page" id="index.html">
+			<div data-role="header" id="header">
+				<h1>Mobile Template</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<div class="first_page_image" ></div>
+				<ul data-role="listview" class="ul_list" data-inset="true">
+					<li><a  href="#gallery-page" data-transition="slide"  data-icon="arrow-r"   data-iconpos="right">Gallery</a></li><br />
+					<li><a  href="#about.html" data-transition="slide"  data-icon="arrow-r" data-iconpos="right">About</a></li><br />
+					<li><a  href="#features.html" data-transition="slide"   data-icon="arrow-r" data-iconpos="right">Places</a></li><br />
+					<li><a  href="#typography.html" data-transition="slide"   data-icon="arrow-r" data-iconpos="right">Typography</a></li><br />
+				</ul>
+				<!--<div class="first_page_blocks" >
+					<a href="#about.html" data-transition="slide" data-role="button"  data-inline="true">About</a>
+				    <a href="#gallery-page" data-transition="slide" data-role="button"  data-inline="true">Gallery</a>
+					<a href="#features.html" data-transition="slide" data-role="button"  data-inline="true">Places</a>
+					<a href="#typography.html" data-transition="slide" data-role="button"  data-inline="true">Typography</a>
+				</div>
+					-->
+				</div><!-- /content -->
+			  <div data-role="footer" data-id="foo1" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<div data-role="page"  id="gallery-page">
+			<div data-role="header" id="header">
+				<a href="index.html" data-rel="back" data-icon="home"   >Home</a>
+				<h1>Mobile Template</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<ul class="gallery">
+						<li><a href="images/placeholder.jpg" rel="external"><img src="images/placeholder.jpg" alt="Image 010" /></a></li>
+						<li><a href="images/placeholder1.jpg" rel="external"><img src="images/placeholder1.jpg" alt="Image 011" /></a></li>
+						<li><a href="images/placeholder2.jpg" rel="external"><img src="images/placeholder2.jpg" alt="Image 012" /></a></li>
+						<li><a href="images/placeholder3.jpg" rel="external"><img src="images/placeholder3.jpg" alt="Image 013" /></a></li>
+						<li><a href="images/placeholder4.jpg" rel="external"><img src="images/placeholder4.jpg" alt="Image 014" /></a></li>
+						<li><a href="images/placeholder.jpg" rel="external"><img src="images/placeholder.jpg" alt="Image 015" /></a></li>
+						
+				</ul>
+					
+			</div><!-- /content -->
+			 <div data-role="footer" data-id="foo1" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<div data-role="page" id="share-dialog.html" >
+			<div data-role="content">
+				 <h3>Follow us on</h3>
+            <a href="http://facebook.com" data-role="button" >Facebook</a>     
+            <a href="#" data-role="button" >Flickr</a>       
+            <a href="#" data-role="button" >Twitter</a>      
+            <a href="#" data-role="button" >Youtube</a>       
+                      
+            <a href="#index.html" data-role="button"  >Cancel</a>    
 
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Backbone.js Web App</title>
-        <link rel="stylesheet" href="css/screen.css" />
-    </head>
-    <body>
-        <div id="contacts">
-            <header>
-                <div id="filter"><label>Show me:</label></div>
-                <input type="button" value="Exit" onclick="exitFromApp();">
-                 <!-- <input type="button" value="Delete File" onclick="doDeleteFile();">-->
-                <a id="showForm" href="#">Add new contact</a>
-                <form id="addContact" action="#">
-                    <label for="photo">Photo:</label><input id="photo" type="file" />
-                    <label for="name">Name:</label><input id="name" />
-                    <label for="type">Type:</label><input id="type" />
-					<label for="address">Address:</label><input id="address" />
-                    <label for="tel">Tel:</label><input id="tel" />
-                    <label for="email">Email:</label><input id="email" />
-                    <button id="add">Add</button>
-                </form>
-            </header>
-        </div>
-        <div id="content"></div>    
-        <script id="contactTemplate" type="text/template">
-            <img src="<%= photo %>" alt="<%= name %>" />
-            <h1><%= name %><span><%= type %></span></h1>
-            <div><%= address %></div><div id ="rating"><%= rate%></div>
-            <dl>
-                <dt>Tel:</dt><dd><%= tel %></dd>
-                <dt>Email:</dt><dd><a href="mailto:<%= email %>"><%= email %></a></dd>
-            </dl>
-            <button class="delete">Delete</button>
-            <button class="edit">Edit</button>
-        </script>
-        <script id="contactEditTemplate" type="text/template">
-            <form action="#">
-                <input type="file" value="<%= photo %>" />
-                <input class="name" value="<%= name %>" />
-                <input id="type" type="hidden" value="<%= type %>" />
-                <input class="address" value="<%= address %>" />
-				 <input class="rate" value="<%=rate %>" />
-                <input class="tel" value="<%= tel %>" />
-                <input class="email" value="<%= email %>" />
-                <button class="save">Save</button>
-                <button class="cancel">Cancel</button>
-            </form>
-        </script>  
-        
-       	<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>
-        <script src="js/jquery-1.7.1.min.js"></script>
+			</div><!-- /content -->
+		</div><!-- /page -->
+		
+		<div data-role="page"  id="typography.html">
+			<div data-role="header" id="header">
+				<a href="index.html" data-rel="back" data-icon="home"   >Home</a>
+				<h1>Mobile Template</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+					
+		
+			</div><!-- /content -->
+			 <div data-role="footer" data-id="foo1" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+
+		<div data-role="page"  id="about.html" >
+			<div data-role="header" id="header">
+				<a href="#index.html" data-icon="home" data-rel="back" >Home</a>
+				<h1>Mobile Template</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<div data-role="collapsible-set"  data-inset="false" >
+
+					<div data-role="collapsible" data-collapsed="false">
+					<h3  >Mobile</h3>
+					<p>jQuery�s mobile strategy can be summarized simply: A unified user interface system that works seamlessly across all popular mobile device platforms, built on the rock-solid jQuery and jQuery UI foundation. Focused on a lightweight codebase built on progressive enhancement with a flexible, easily themeable design.</p>
+					</div>
+					
+					<div data-role="collapsible" >
+					<h3>About</h3>
+					<p>jQuery Mobile provides a set of touch-friendly UI widgets and an AJAX-powered navigation system to support animated page transitions. </p>
+					</div>
+	
+				</div>
+				<p class="copyright">Copyright &copy; mobi. Designed by <a href="http://mrova.com" class="ui-link">mRova</a></p>
+			</div><!-- /content -->
+			 <div data-role="footer" data-id="foo1" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<div data-role="page" data-add-back-btn="true" id="contact.html">
+			<div data-role="header" id="header">
+				<a href="#index.html" data-icon="home" data-rel="back" >Home</a>
+				<h1>Mobile Template</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<div class="ui-body ui-body-b ui-corner-all">
+					<div class="contact-thankyou" style="display: none;">
+						Thank you.  Your message has been sent.  We will get back to you as soon as we can.
+					</div>
+					<div class="contact-form">
+						<p class="mandatory">
+							* Indicates Mandatory Field
+						</p>
+						<div data-role="fieldcontain" class="text-field">
+							<label for="firstname">First Name*:</label>
+							<input type="text" name="firstname" value= placeholder= class="required" id="firstname" />
+						</div>
+						<div data-role="fieldcontain" class="text-field">
+							<label for="surname">Last Name:</label>
+							<input type="text" name="surname" value= placeholder= id="surname" />
+						</div>
+						<div data-role="fieldcontain" class="text-field">
+							<label for="email">Email Address*:</label>
+							<input type="email" name="email" value= placeholder= class="required" id="email"  />
+						</div>
+						<div data-role="fieldcontain" class="text-field">
+							<label for="mobilephone">Mobile Number:</label>
+							<input type="number" name="mobilephone" value= placeholder= id="mobilephone" />
+						</div>
+						<div data-role="fieldcontain">
+							<label for="message">Message*:</label>
+							<textarea name="message" id="message" placeholder= class="required"></textarea>
+						</div>
+						<div class="send">
+							<a href="javascript:;" data-role="button"  data-iconpos="right" id="send">send</a>
+						</div>
+					</div><!-- //.contact-form -->
+				</div>
+				</div><!-- /content -->
+			 <div data-role="footer" data-id="foo1" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+		
+		<div data-role="page"  id="features.html">
+			<div data-role="header"  id="header">
+				<a href="#index.html" data-rel="back" data-icon="home"  >Home</a>
+				<h1>Mobile Template</h1>
+				<div id="contacts">
+                	<div id="filter" ></div>
+	                <!-- <input type="button" value="Exit" onclick="exitFromApp();"> -->
+	                 <!-- <input type="button" value="Delete File" onclick="doDeleteFile();">-->
+	                <a id="showForm" data-role="button" href="#">Add new Food</a>
+	                
+	                    <!--<label for="photo">Photo:</label><input data-mini="true" id="photo" type="file" />-->
+                    <div id="addContact" data-role="fieldcontain" action="#">
+                   		<label for="photo">Pic:</label><img id="photo" src="" value="" onclick="capturepic();"></img>
+                        <label for="name">Name:</label><input type="text" data-mini="true" id="name" />
+                        <label for="type">Type:</label><input type="text" data-mini="true" id="type" />
+    					<label for="tel">Tel:</label><input type="text" data-mini="true" id="tel" />
+                        <label for="email">Email:</label><input type="text" data-mini="true" id="email" />
+                        <label for="address">Address:</label><input type="text" data-mini="true" id="address" />
+                        <a href="#"  data-inline="true" data-role="button" id="add">Add Item</a>                    
+                    </div>
+           		 </div>
+			</div><!-- /header -->
+			<div data-role="content">
+					<div id="content"></div>    
+			        <script id="contactTemplate" type="text/template">
+			            <img id="editpic" src="<%= photo %>" alt="<%= name %>" />
+			            <h1><%= name %><span><%= type %></span></h1>
+			            <div id ="rating"><%= rate%></div>
+			            
+			            <dl>
+			                <dt></dt><dd><%= address %></dd>
+			                <dt>Tel:</dt><dd><%= tel %></dd>
+			                <dt>Email:</dt><dd><a href="mailto:<%= email %>"><%= email %></a></dd>
+			            </dl>
+			            <br /> <br /> 
+			            <div>
+			                <button data-inline="true" class="delete">Delete</button>
+			                <button data-inline="true" class="edit">Edit</button>
+			            </div>
+			        </script>
+			        <script id="contactEditTemplate" type="text/template">
+			            <form action="#" id="editform">
+			                <img id="pic" src="<%= photo %>" onclick="capturepic();"></img>
+			                <input id="name" value="<%= name %>" />
+			                <input id="type" type="hidden" value="<%= type %>" />
+			                <input id="address" value="<%= address %>" />
+							<input id="rate" value="<%=rate %>" />
+			                <input id="tel" value="<%= tel %>" />
+			                <input id="email" value="<%= email %>" />
+			                <button data-inline="true" class="save">Save</button>
+			                <button data-inline="true" class="cancel">Cancel</button>
+			            </form>
+			        </script>  
+					
+			</div><!-- /content -->
+			<p class="copyright">Copyright &copy; Me. Designed by <a href= class="ui-link">By ME</a></p>
+		 <div data-role="footer" data-id="foo1" >
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#index.html"  data-icon="home">Home</a></li>
+							<li><a href="#share-dialog.html"   data-icon="star"  data-rel="dialog">Share</a> </li>
+							<li> <a href="#contact.html"  data-icon="plus"  data-transition="slide">Contact</a></li>
+							<li> <a href=  class="returnTopAction"   data-icon="arrow-u" >Return top</a> </li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div><!-- /page -->
+
+		<script type="text/javascript" charset="utf-8" src="js/cordova.js"></script>    
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile.js"></script>
+		<script type="text/javascript" src="js/klass.min.js"></script>
+		<script type="text/javascript" src="js/code.photoswipe.jquery-3.0.4.min.js"></script>		 	
         <script src="js/json2.js"></script>
         <script src="js/underscore-min.js"></script>
         <script src="js/backbone-min.js"></script>
+        
+        <script src="js/data.js"></script>
+        <script src="js/camera.js"></script>
+       
+       <!--  <script src="js/browser.js"></script> -->
         <script src="js/app.js"></script>
-    </body>
+		<script type="text/javascript" src="js/custom.js"></script>
+
+	</body>
 </html>
